@@ -32,7 +32,7 @@ export default function App() {
           //   };
           // }} 
           />
-          <Stack.Screen name='MealDetails' component={MealDetailScreen} />
+          <Stack.Screen name='MealDetailScreen' component={MealDetailScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </>
