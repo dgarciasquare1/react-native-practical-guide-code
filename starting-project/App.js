@@ -19,7 +19,7 @@ export default function App() {
           contentStyle: { backgroundColor: '#3f2f25' }
         }}>
           <Stack.Screen name='MealsCategories' component={CategoriesScreen} options={{
-            title: 'All categories',
+            title: 'All categories'
           }} />
           <Stack.Screen name='MealsOverviewScreen' component={MealsOverviewScreen} />
         </Stack.Navigator>
