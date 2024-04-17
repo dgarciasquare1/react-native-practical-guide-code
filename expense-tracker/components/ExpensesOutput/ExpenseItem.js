@@ -3,23 +3,36 @@ import { Pressable, View, Text, StyleSheet } from "react-native";
 import { GlobalStyles } from "../../constants/styles";
 import { getFormatedDate } from "../../utils/date";
 
-function ExpenseItem({ description, amount, date }) {
-    return <Pressable>
-        <View style={styles.expenseItem}>
-            <View>
-                <Text style={[styles.textBase, styles.description]}>{description}</Text>
-                <Text style={styles.textBase}>{getFormatedDate(date)}</Text>
+function ExpenseItem({ description, amount, date, onPress }) {
+
+    function expensePressHandler() {
+
+    }
+
+    return (
+        <Pressable
+            onPress={expensePressHandler}
+            style={({ pressed }) => pressed && styles.pressed}
+        >
+            <View style={styles.expenseItem}>
+                <View>
+                    <Text style={[styles.textBase, styles.description]}>{description}</Text>
+                    <Text style={styles.textBase}>{getFormatedDate(date)}</Text>
+                </View>
+                <View style={styles.amountContainer}>
+                    <Text style={styles.amount}>${amount.toFixed(2)}</Text>
+                </View>
             </View>
-            <View style={styles.amountContainer}>
-                <Text style={styles.amount}>${amount.toFixed(2)}</Text>
-            </View>
-        </View>
-    </Pressable>
+        </Pressable>
+    );
 }
 
 export default ExpenseItem;
 
 const styles = StyleSheet.create({
+    pressed: {
+        opacity: 0.75
+    },
     expenseItem: {
         padding: 12,
         marginVertical: 8,
