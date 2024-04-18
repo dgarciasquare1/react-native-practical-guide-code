@@ -17,7 +17,9 @@ function ManageExpense({ route, navigation }) {
 
   function deleteExpenseHandler() {}
 
-  function cancelHandler() {}
+  function cancelHandler() {
+    navigation.goBack();
+  }
 
   function confirmHandler() {}
 
