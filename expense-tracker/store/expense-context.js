@@ -71,10 +71,10 @@ function expensesReducer(state, action) {
       return [{ ...action.payload, id: id }, ...state];
     case "UPDATE":
       const updatableExpenseIndex = state.findIndex(
-        (expense) => expense.id === action.id
+        (expense) => expense.id === action.payload.id
       );
       const updatableExpense = state[updatableExpenseIndex];
-      const updateItem = { ...updatableExpense, ...action.data };
+      const updateItem = { ...updatableExpense, ...action.payload.data };
       const updatedExpenses = [...state];
       updatedExpenses[updatableExpenseIndex] = updateItem;
       return updatedExpenses;
