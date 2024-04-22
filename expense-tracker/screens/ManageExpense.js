@@ -1,18 +1,17 @@
 import { useContext, useLayoutEffect } from "react";
-import { StyleSheet, TextInput, View } from "react-native";
+import { View, StyleSheet } from "react-native";
 
-import ExpenseForm from "../components/ManageExpense/ExpenseForm";
 import IconButton from "../components/UI/IconButton";
 import { GlobalStyles } from "../constants/styles";
-import { ExpensesContext } from "../store/expenses-context";
+import { ExpensesContext } from "../store/expense-context";
+import ExpenseForm from "../components/ManageExpense/ExpenseForm";
 
 function ManageExpense({ route, navigation }) {
-  const expensesCtx = useContext(ExpensesContext);
-
+  const expensesContext = useContext(ExpensesContext);
   const editedExpenseId = route.params?.expenseId;
-  const isEditing = !!editedExpenseId;
+  const isEditing = !!editedExpenseId; //Check if editedExpenseId is undefined
 
-  const selectedExpense = expensesCtx.expenses.find(
+  const selectedExpense = expensesContext.expenses.find(
     (expense) => expense.id === editedExpenseId
   );
 
@@ -23,7 +22,7 @@ function ManageExpense({ route, navigation }) {
   }, [navigation, isEditing]);
 
   function deleteExpenseHandler() {
-    expensesCtx.deleteExpense(editedExpenseId);
+    expensesContext.deleteExpense(editedExpenseId);
     navigation.goBack();
   }
 
@@ -33,9 +32,9 @@ function ManageExpense({ route, navigation }) {
 
   function confirmHandler(expenseData) {
     if (isEditing) {
-      expensesCtx.updateExpense(editedExpenseId, expenseData);
+      expensesContext.updateExpense(editedExpenseId, expenseData);
     } else {
-      expensesCtx.addExpense(expenseData);
+      expensesContext.addExpense(expenseData);
     }
     navigation.goBack();
   }
@@ -44,8 +43,8 @@ function ManageExpense({ route, navigation }) {
     <View style={styles.container}>
       <ExpenseForm
         submitButtonLabel={isEditing ? "Update" : "Add"}
-        onSubmit={confirmHandler}
         onCancel={cancelHandler}
+        onSubmit={confirmHandler}
         defaultValues={selectedExpense}
       />
       {isEditing && (
