@@ -20,7 +20,7 @@ export async function fetchExpenses() {
       description: response.data[key].description,
     };
     expenses.push(expenseObj);
-
-    return expenses;
   }
+
+  return expenses;
 }
