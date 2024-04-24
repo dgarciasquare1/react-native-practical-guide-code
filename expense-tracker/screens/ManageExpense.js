@@ -7,9 +7,11 @@ import { ExpensesContext } from "../store/expense-context";
 import ExpenseForm from "../components/ManageExpense/ExpenseForm";
 import { storeExpense, updateExpense, deleteExpense } from "../utils/http";
 import LoadingOverlay from "../components/UI/LoadingOverlay";
+import ErrorOverlay from "../components/UI/ErrorOverlay";
 
 function ManageExpense({ route, navigation }) {
   const [isSubmitting, setIsSumitting] = useState(false);
+  const [error, setError] = useState();
   const expensesContext = useContext(ExpensesContext);
   const editedExpenseId = route.params?.expenseId;
   const isEditing = !!editedExpenseId; //Check if editedExpenseId is undefined
@@ -26,9 +28,14 @@ function ManageExpense({ route, navigation }) {
 
   async function deleteExpenseHandler() {
     setIsSumitting(true);
-    await deleteExpense(editedExpenseId);
-    expensesContext.deleteExpense(editedExpenseId);
-    navigation.goBack();
+    try {
+      await deleteExpense(editedExpenseId);
+      expensesContext.deleteExpense(editedExpenseId);
+      navigation.goBack();
+    } catch (error) {
+      setError("Could not delete expense - please try again later!");
+      setIsSumitting(false);
+    }
   }
 
   function cancelHandler() {
@@ -37,14 +44,23 @@ function ManageExpense({ route, navigation }) {
 
   async function confirmHandler(expenseData) {
     setIsSumitting(true);
-    if (isEditing) {
-      expensesContext.updateExpense(editedExpenseId, expenseData);
-      await updateExpense(editedExpenseId, expenseData);
-    } else {
-      const id = await storeExpense(expenseData);
-      expensesContext.addExpense({ id: id, ...expenseData });
+    try {
+      if (isEditing) {
+        expensesContext.updateExpense(editedExpenseId, expenseData);
+        await updateExpense(editedExpenseId, expenseData);
+      } else {
+        const id = await storeExpense(expenseData);
+        expensesContext.addExpense({ id: id, ...expenseData });
+      }
+      navigation.goBack();
+    } catch (error) {
+      setError("Could not save data - please try again later!");
+      setIsSumitting(false);
     }
-    navigation.goBack();
+  }
+
+  if (error && !isSubmitting) {
+    return <ErrorOverlay message={error} />;
   }
 
   if (isSubmitting) {
