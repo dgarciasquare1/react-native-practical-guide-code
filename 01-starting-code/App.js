@@ -83,6 +83,10 @@ export default function App() {
       fetchToken();
     }, []);
 
+    if (isTryingLogin) {
+      return <AppLoading />;
+    }
+
     return <Navigation />;
   }
 
