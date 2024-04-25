@@ -19,8 +19,8 @@ function SignupScreen() {
         "Authentication failed!",
         "Could not create usr. Please check your input and try again later!"
       );
+      setIsAuthenticating(false);
     }
-    setIsAuthenticating(false);
   }
 
   if (isAuthenticating) {
